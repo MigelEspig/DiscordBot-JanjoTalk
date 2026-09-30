@@ -14,4 +14,4 @@ async def odiar(ctx:commands.Context):
     await ctx.reply(f"Obrigado, {name}, por odiar a deturpadora da paz")
     # Anotação científica: caso eu trocasse o "ctx.reply" por "ctx.send", o bot mandaria a mensagem sem dar reply.
 
-bot.run("MTU1NDkxNDc5NjIzNzg4NTU5MQ.GuFRIY.PZhK0tLv4PPbOkwtLtDYzd3zCfFXZMRWrYjrpk")
+bot.run("")
