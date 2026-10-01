@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from tokenBot import runBot
+import random
 
 intents = discord.Intents.all()
 bot = commands.Bot("~", intents=intents)
@@ -35,8 +36,15 @@ async def on_message(msg:discord.Message):
     f"{msg.author.mention} merecia um troféu de \"insuportável do ano\". Mas nem troféu eu gastaria contigo."
     ]
 
-    # randomMsg = 
+    randomMsg = int(random.randint(0,len(loveMsg)))
 
+    if msg.author.bot:
+        return
+    
+    if random.random() < 0.05:
+        await msg.reply(loveMsg[randomMsg])
+
+    await bot.process_commands(msg)
 
 @bot.command()
 async def odiar(ctx:commands.Context):
