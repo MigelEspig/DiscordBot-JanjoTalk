@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from tokenBot import runBot
 
 intents = discord.Intents.all()
 bot = commands.Bot("~", intents=intents)
@@ -70,6 +71,7 @@ async def tocar(ctx):
     await ctx.send("Tocando áudio!")
     ctx.voice_client.play(source)
 
+runBot()
 
-bot.run("")
+# bot.run("")
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
