@@ -101,4 +101,5 @@ async def tocar(ctx):
 
 # runBot()
 
+bot.run("")
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
