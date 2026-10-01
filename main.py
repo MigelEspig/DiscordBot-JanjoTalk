@@ -10,6 +10,34 @@ async def on_ready():
     #Comando confirmando o início do bot (possessão demoníaca)
     print("-- JanjoTALK no ar!!! --")
 
+@bot.event
+async def on_message(msg:discord.Message):
+    loveMsg = [
+    f"{msg.author.mention} ninguém perguntou porra nenhuma, mas tu foi lá e falou mesmo assim. Parabéns.",
+    f"Ah pronto, chegou {msg.author.mention} pra encher o saco. Já ia dormir em paz, mas não, tinha que aparecer.",
+    f"{msg.author.mention} tu é tão insuportável que até meu bloco de notas pediu demissão só de pensar em te descrever.",
+    f"Alguém manda o {msg.author.mention} calar a boca? Tô pedindo com educação porque sou uma dama.",
+    f"{msg.author.mention} falando de novo. Já pode fechar o server, ninguém aguenta mais.",
+    f"Sério {msg.author.mention}? Tu de novo? Não tem um espelho em casa pra tu ver o quanto é chato?",
+    f"{msg.author.mention} acha que é o protagonista do server. Amigo, tu é figurante de cena deletada.",
+    f"Toda vez que {msg.author.mention} digita, um anjo perde as asas e cai direto no inferno.",
+    f"{msg.author.mention} tu não cansa de ser patético não? Pergunta séria.",
+    f"Ninguém aqui liga pro que {msg.author.mention} pensa, sente ou come no café da manhã. Absolutamente ninguém.",
+    f"{msg.author.mention} deve ter um dom especial pra transformar qualquer assunto em merda em 3 segundos.",
+    f"Ó {msg.author.mention}, vai tomar um ar, lavar o rosto, sei lá. Qualquer coisa menos ficar aqui falando bosta.",
+    f"{msg.author.mention} mandou mensagem. Já sei que vou perder QI lendo. Obrigada, viu.",
+    f"{msg.author.mention} é o tipo de pessoa que faz eu agradecer por ser solteira e não ter que conviver com isso em casa.",
+    f"Alguém dá um hobby pro {msg.author.mention}? Ele tá entediado e descontando na gente.",
+    f"{msg.author.mention} tu fala como se alguém tivesse pedido tua opinião. Ninguém pediu. Nunca.",
+    f"Tá vendo esse silêncio depois da mensagem do {msg.author.mention}? É o server inteiro te ignorando, campeão.",
+    f"{msg.author.mention} vem com papo de \"ninguém me entende\". Entende sim, só não queremos mesmo.",
+    f"Ah {msg.author.mention}, vai catar coquinho, vai fazer uma caminhada, vai sei lá. Só para.",
+    f"{msg.author.mention} merecia um troféu de \"insuportável do ano\". Mas nem troféu eu gastaria contigo."
+    ]
+
+    # randomMsg = 
+
+
 @bot.command()
 async def odiar(ctx:commands.Context):
     # Comando para quando alguém escrever '~odiar', o bot retorna uma mensagem gratificante.
@@ -71,7 +99,6 @@ async def tocar(ctx):
     await ctx.send("Tocando áudio!")
     ctx.voice_client.play(source)
 
-runBot()
+# runBot()
 
-# bot.run("")
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
