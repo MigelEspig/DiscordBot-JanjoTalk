@@ -35,16 +35,21 @@ async def on_message(msg:discord.Message):
     f"Ah {msg.author.mention}, vai catar coquinho, vai fazer uma caminhada, vai sei lá. Só para.",
     f"{msg.author.mention} merecia um troféu de \"insuportável do ano\". Mas nem troféu eu gastaria contigo."
     ]
+    # Lista de frases motivadoras
 
     randomMsg = int(random.randint(0,len(loveMsg)))
+    # Seleciona aleatóriamente uma das 20 frases da array
 
     if msg.author.bot:
         return
+    # Não aciona o evento caso a mensagem seja do próprio bot
     
     if random.random() < 0.05:
+    # Gera um número de 0-1 aleatório com 5% de chance de acionar o evento
         await msg.reply(loveMsg[randomMsg])
 
     await bot.process_commands(msg)
+    # mantém os demais comandos funcionando (sem ele o evento 'on_message' "bloqueia" os outros comando)
 
 @bot.command()
 async def odiar(ctx:commands.Context):
@@ -58,8 +63,9 @@ async def falar(ctx:commands.Context,*, text):
     # Comando teste temporário para repetir mensagem do remetente
     await ctx.send(text)
 
-
-# COMANDOS RELACIONADOS À CALLS:
+# -------------------------------
+# COMANDOS PARA CALLS:
+# -------------------------------
 @bot.command()
 async def entrar(ctx):
     # Comando para entrar na chamada que o remetente está
