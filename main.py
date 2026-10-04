@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from gtts import gTTS
 from tokenBot import runBot
 import random
 
@@ -58,14 +59,34 @@ async def odiar(ctx:commands.Context):
     await ctx.reply(f"Obrigado, {name}, por odiar a deturpadora da paz")
     # Anotação científica: caso eu trocasse o "ctx.reply" por "ctx.send", o bot mandaria a mensagem sem dar reply.
 
-@bot.command()
-async def falar(ctx:commands.Context,*, text):
-    # Comando teste temporário para repetir mensagem do remetente
-    await ctx.send(text)
-
 # -------------------------------
 # COMANDOS PARA CALLS:
 # -------------------------------
+
+@bot.command()
+async def falar(ctx:commands.Context,*, text):
+    # Comando teste temporário para repetir mensagem do remetente
+    GenerateAudio = gTTS(text = text, lang="pt-br")
+    GenerateAudio.save("Sounds/TextoFalado.mp3")
+
+    if not ctx.author.voice:
+    # verifica se o remetente está em uma chamada
+        await ctx.send("Você precisa estar em uma call!")
+        return
+
+    canal = ctx.author.voice.channel
+
+    if ctx.voice_client is None:
+        await canal.connect()
+
+    if ctx.voice_client.is_playing():
+        ctx.voice_client.stop()
+
+    source = discord.FFmpegPCMAudio(r"Sounds/TextoFalado.mp3") 
+    await ctx.send("Tocando áudio!")
+    ctx.voice_client.play(source)
+
+
 @bot.command()
 async def entrar(ctx):
     # Comando para entrar na chamada que o remetente está
@@ -109,11 +130,10 @@ async def tocar(ctx):
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
-    source = discord.FFmpegPCMAudio(r"C:\Users\Henri\Documents\GitHub\DiscordBot-JanjoTalk\Sounds\Musica2.mp3")
+    source = discord.FFmpegPCMAudio(r"Sounds/Musica2.mp3")
     await ctx.send("Tocando áudio!")
     ctx.voice_client.play(source)
 
 # runBot()
 
-bot.run("")
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
