@@ -11,8 +11,8 @@ Bot destinado à transmitir audio do pc do usuário. Com o propósito de repor a
 
 ## EVENTOS EXISTENTES:
 
-- on_ready = Retorna uma mensagem no terminal avisando que o bot ligou;
-- on_message = Evento aletório de 5% de, a cada mensagem, JanjoTALK pode retornar uma frase ofendendo o remetente;
+- `on_ready` = Retorna uma mensagem no terminal avisando que o bot ligou;
+- `on_message` = Evento aletório de 5% de, a cada mensagem, JanjoTALK pode retornar uma frase ofendendo o remetente;
 
 ### REQUISITOS PARA RODAR:
 
