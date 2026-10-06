@@ -134,6 +134,16 @@ async def tocar(ctx):
     await ctx.send("Tocando áudio!")
     ctx.voice_client.play(source)
 
-# runBot()
+@bot.command()
+async def parar(ctx:commands.context):
+
+    if ctx.voice_client is not None:
+        if ctx.voice_client.is_playing():
+            ctx.voice_client.stop()
+        else:
+            await ctx.reply("Vai tomar no teu cu seu pedaço de bosta, to nem falando nada.")
+    else:
+        await ctx.reply("Seu merdinha, eu nem em call to pra começar.")
+
 
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO

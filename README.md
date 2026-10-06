@@ -18,6 +18,6 @@ Bot destinado à transmitir audio do pc do usuário. Com o propósito de repor a
 
 Realizar instalação das bibliotecas:
 
-- FFmpeg ('pip install FFmpeg')
+- FFmpeg ('winget install Gyan.FFmpeg')
 - PyNaCl ('pip intall PyNaCl')
 - davey ('pip install davey')
