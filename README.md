@@ -21,3 +21,4 @@ Realizar instalação das bibliotecas:
 - FFmpeg ('winget install Gyan.FFmpeg')
 - PyNaCl ('pip intall PyNaCl')
 - davey ('pip install davey')
+- openai ('pip install openai')
