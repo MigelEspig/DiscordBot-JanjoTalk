@@ -3,9 +3,24 @@ from discord.ext import commands
 from gtts import gTTS
 from tokenBot import runBot
 import random
+import yt_dlp
 
 intents = discord.Intents.all()
 bot = commands.Bot("~", intents=intents)
+
+# Configurações básicas das bibliotecas
+YTDL_OPTIONS = {
+    'format': 'bestaudio/best',
+    'noplaylist': True,
+    'default_search': 'ytsearch',
+    'quiet': True,
+}
+
+FFMPEG_OPTIONS = {
+    'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+    'options': '-vn',
+}
+
 
 @bot.event
 async def on_ready():

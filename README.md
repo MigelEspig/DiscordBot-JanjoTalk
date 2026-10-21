@@ -22,3 +22,4 @@ Realizar instalação das bibliotecas:
 - PyNaCl ('pip intall PyNaCl')
 - davey ('pip install davey')
 - openai ('pip install openai')
+- yt-dlp ('pip install yt-dlp')
