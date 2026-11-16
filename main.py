@@ -15,6 +15,7 @@ YTDL_OPTIONS = {
     'default_search': 'ytsearch5',
     'quiet': False,
     'remote_components': ['ejs:github'],
+    'volume': 80
 }
 
 FFMPEG_OPTIONS = {
@@ -178,6 +179,12 @@ async def tocar(ctx,*, pesquisa:str):
 
     ctx.voice_client.play(source)
     await ctx.send(f"Reproduzindo: **{titulo}**")
+
+@bot.command
+async def volume(ctx, valor: int):
+    if ctx.voice_client and ctx.voice_client.source:
+        ctx.voice_client.source.volume = valor / 100
+        await ctx.send(f"Volume ajustado para **{valor}%**.")
 
 @bot.command()
 async def motivar(ctx):
