@@ -10,16 +10,25 @@ bot = commands.Bot("~", intents=intents)
 
 # Configurações básicas das bibliotecas
 YTDL_OPTIONS = {
-    'format': 'bestaudio/best',
+    'format': 'bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio[protocol!=m3u8][protocol!=m3u8_native]/bestaudio',
     'noplaylist': True,
-    'default_search': 'ytsearch',
-    'quiet': True,
+    'default_search': 'ytsearch5',
+    'quiet': False,
+    'remote_components': ['ejs:github'],
 }
 
 FFMPEG_OPTIONS = {
     'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
     'options': '-vn',
 }
+
+ytdl = yt_dlp.YoutubeDL(YTDL_OPTIONS)
+
+def buscar_video(pesquisa):
+    data = ytdl.extract_info(pesquisa, download=False)
+    if 'entries' in data:
+        return data['entries'][0]
+    return data
 
 
 @bot.event
@@ -130,8 +139,49 @@ async def sair(ctx):
         await ctx.send("Não estou em nenhuma call.")
 
 @bot.command()
-async def tocar(ctx):
-    # Comando para tocar um arquivo .mp3 da pasta nativa do programa
+async def tocar(ctx,*, pesquisa:str):
+
+    if not ctx.author.voice:
+    # verifica se o remetente está em uma chamada
+        await ctx.send("Você precisa estar em uma call!")
+        return
+
+    canal = ctx.author.voice.channel
+
+    if ctx.voice_client is None:
+        await canal.connect()
+
+    if ctx.voice_client.is_playing():
+        ctx.voice_client.stop()
+
+    async with ctx.typing():
+        data = await bot.loop.run_in_executor(None, buscar_video, pesquisa)
+
+    if not data:
+        await ctx.send("Não existe essa música, SEU FASCISTA!") 
+        return
+
+    # if len(data) == 1:
+    #     chosen = data[0]
+    # else:
+    #     for i,
+        
+
+
+    audio_url = data['url']
+    titulo = data['title']
+
+    source = discord.FFmpegPCMAudio(audio_url, **FFMPEG_OPTIONS)
+
+    if ctx.voice_client.is_playing():
+        ctx.voice_client.stop()
+
+    ctx.voice_client.play(source)
+    await ctx.send(f"Reproduzindo: **{titulo}**")
+
+@bot.command()
+async def motivar(ctx):
+    # Comando para tocar um arquivo .mp3 hiperestimulante da pasta nativa do programa
     if not ctx.author.voice:
     # verifica se o remetente está em uma chamada
         await ctx.send("Você precisa estar em uma call!")

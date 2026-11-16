@@ -23,3 +23,4 @@ Realizar instalação das bibliotecas:
 - davey ('pip install davey')
 - openai ('pip install openai')
 - yt-dlp ('pip install yt-dlp')
+- Deno ('winget install DenoLand.Deno')
