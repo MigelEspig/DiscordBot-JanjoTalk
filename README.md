@@ -1,6 +1,6 @@
 # BEM-VINDO À JANJOTALK
 
-Bot destinado à transmitir audio do pc do usuário. Com o propósito de repor a função de transmitir tela com áudio.
+Bot destinado à enriquecer a experiência de seu servidor do discord.
 ---
 ## FUNÇÕES EXISTENTES:
 
@@ -14,13 +14,12 @@ Bot destinado à transmitir audio do pc do usuário. Com o propósito de repor a
 - `on_ready` = Retorna uma mensagem no terminal avisando que o bot ligou;
 - `on_message` = Evento aletório de 5% de, a cada mensagem, JanjoTALK pode retornar uma frase ofendendo o remetente;
 
-### REQUISITOS PARA RODAR:
+### PRÉ-REQUISITOS PARA RODAR:
 
 Realizar instalação das bibliotecas:
 
 - FFmpeg ('winget install Gyan.FFmpeg')
 - PyNaCl ('pip intall PyNaCl')
 - davey ('pip install davey')
-- openai ('pip install openai')
 - yt-dlp ('pip install yt-dlp')
 - Deno ('winget install DenoLand.Deno')
