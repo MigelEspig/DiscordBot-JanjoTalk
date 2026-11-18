@@ -144,7 +144,7 @@ async def tocar(ctx,*, pesquisa:str):
 
     if not ctx.author.voice:
     # verifica se o remetente está em uma chamada
-        await ctx.send("Você precisa estar em uma call!")
+        await ctx.reply("vou tocar o áudio pra quem? ta mais louco que meu marido")
         return
 
     canal = ctx.author.voice.channel
@@ -165,10 +165,9 @@ async def tocar(ctx,*, pesquisa:str):
     # if len(data) == 1:
     #     chosen = data[0]
     # else:
-    #     for i,
+    #     for i in data:
+
         
-
-
     audio_url = data['url']
     titulo = data['title']
 
@@ -216,6 +215,5 @@ async def parar(ctx:commands.context):
             await ctx.reply("Vai tomar no teu cu seu pedaço de bosta, to nem falando nada.")
     else:
         await ctx.reply("Seu merdinha, eu nem em call to pra começar.")
-
 
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
