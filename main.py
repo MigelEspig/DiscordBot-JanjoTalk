@@ -6,7 +6,7 @@ import random
 import yt_dlp
 
 intents = discord.Intents.all()
-bot = commands.Bot("~", intents=intents)
+bot = commands.Bot("~", intents=intents, help_command=None)
 
 # Configurações básicas das bibliotecas
 YTDL_OPTIONS = {
@@ -76,6 +76,26 @@ async def on_message(msg:discord.Message):
 
     await bot.process_commands(msg)
     # mantém os demais comandos funcionando (sem ele o evento 'on_message' "bloqueia" os outros comando)
+
+@bot.command()
+async def ajuda(context):
+    embed = discord.Embed(
+        title=f"Perfil Genshin Impact - {nickname}",
+        color=discord.Color.purple()
+    )
+    embed.add_field(name="Nível de Aventura (AR)", value=f"AR {level}", inline=True)
+    embed.add_field(name="Nível do Mundo", value=f"Nível {world_level}", inline=True)
+    embed.add_field(name="Conquistas", value=achievements, inline=True)
+    embed.add_field(name="Amizade Máxima (Lv. 10)", value=f"{fetter_count} personagens", inline=True)
+    embed.add_field(name="Abismo Espiral", value=abismo_texto, inline=True)
+    embed.add_field(name="Teatro Imaginário", value=teatro_texto, inline=True)
+
+
+    if player.get('signature'):
+        embed.set_footer(text=f'Assinatura: "{player.get("signature")}"')
+
+
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def odiar(ctx:commands.Context):
@@ -217,3 +237,5 @@ async def parar(ctx:commands.context):
         await ctx.reply("Seu merdinha, eu nem em call to pra começar.")
 
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
+
+# evento p/ implementar: mandar gif aleatório do presidente da república
