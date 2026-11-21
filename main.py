@@ -53,7 +53,7 @@ async def on_message(msg:discord.Message):
     f"{msg.author.mention} deve ter um dom especial pra transformar qualquer assunto em merda em 3 segundos.",
     f"Ó {msg.author.mention}, vai tomar um ar, lavar o rosto, sei lá. Qualquer coisa menos ficar aqui falando bosta.",
     f"{msg.author.mention} mandou mensagem. Já sei que vou perder QI lendo. Obrigada, viu.",
-    f"{msg.author.mention} é o tipo de pessoa que faz eu agradecer por ser solteira e não ter que conviver com isso em casa.",
+    f"{msg.author.mention} é o tipo de pessoa que faz eu agradecer por ser casada com meu véio e não ter que conviver com isso em casa.",
     f"Alguém dá um hobby pro {msg.author.mention}? Ele tá entediado e descontando na gente.",
     f"{msg.author.mention} tu fala como se alguém tivesse pedido tua opinião. Ninguém pediu. Nunca.",
     f"Tá vendo esse silêncio depois da mensagem do {msg.author.mention}? É o server inteiro te ignorando, campeão.",
@@ -78,24 +78,48 @@ async def on_message(msg:discord.Message):
     # mantém os demais comandos funcionando (sem ele o evento 'on_message' "bloqueia" os outros comando)
 
 @bot.command()
-async def ajuda(context):
-    embed = discord.Embed(
-        title=f"Perfil Genshin Impact - {nickname}",
-        color=discord.Color.purple()
-    )
-    embed.add_field(name="Nível de Aventura (AR)", value=f"AR {level}", inline=True)
-    embed.add_field(name="Nível do Mundo", value=f"Nível {world_level}", inline=True)
-    embed.add_field(name="Conquistas", value=achievements, inline=True)
-    embed.add_field(name="Amizade Máxima (Lv. 10)", value=f"{fetter_count} personagens", inline=True)
-    embed.add_field(name="Abismo Espiral", value=abismo_texto, inline=True)
-    embed.add_field(name="Teatro Imaginário", value=teatro_texto, inline=True)
+async def ajuda(ctx):
+    embed_help = discord.Embed(title="Menu AJUDA",
+                          description="aqui está tudo que eu posso fazer:",)
 
+    imagem_thumb = discord.File("Imgs/JanjoTalkLogo.png", "JanjoTalkLogo.png")
+    embed_help.set_thumbnail(url="attachment://JanjoTalkLogo.png")
 
-    if player.get('signature'):
-        embed.set_footer(text=f'Assinatura: "{player.get("signature")}"')
+    imagem_author = discord.File("Imgs/Author_Logo.png", "Author_logo.png")
+    embed_help.set_author(name="MigelEspig",
+                      url="https://github.com/MigelEspig/DiscordBot-JanjoTalk.git",
+                      icon_url="attachment://Author_logo.png")
 
+    embed_help.color = discord.Color.orange()
+    
+    embed_help.add_field(name="~ajuda", 
+                         value="faz aparecer esse menu!", 
+                         inline=False)
+    
+    embed_help.add_field(name="~odiar", 
+                         value="Retorna uma mensagem amorosa", 
+                         inline=False)
+    
+    embed_help.add_field(name="~entrar", 
+                         value="Entra na chamada do remetente", 
+                         inline=False)
+    
+    embed_help.add_field(name="~sair", 
+                         value="Sai da chamada na qual estava", 
+                         inline=False)
+    
+    embed_help.add_field(name="~motivar", 
+                         value="Toca uma música especial na chamada", 
+                         inline=False)
+    
+    embed_help.add_field(name="~tocar", 
+                         value="pesquisa no Youtube o texto após o comando e reproduz seu audio na chamada", 
+                         inline=False)
 
-    await ctx.send(embed=embed)
+    
+
+    await ctx.reply(files=[imagem_thumb, imagem_author], embed=embed_help)
+
 
 @bot.command()
 async def odiar(ctx:commands.Context):
@@ -237,5 +261,4 @@ async def parar(ctx:commands.context):
         await ctx.reply("Seu merdinha, eu nem em call to pra começar.")
 
 # INSERIR TOKEN DE ACESSO DO BOT PARA LIGÁ-LO
-
 # evento p/ implementar: mandar gif aleatório do presidente da república
