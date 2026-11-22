@@ -25,11 +25,23 @@ FFMPEG_OPTIONS = {
 
 ytdl = yt_dlp.YoutubeDL(YTDL_OPTIONS)
 
+# Função para realizar a pesquisa do vídeo para o comando `~tocar``
 def buscar_video(pesquisa):
     data = ytdl.extract_info(pesquisa, download=False)
     if 'entries' in data:
         return data['entries'][0]
     return data
+
+# Função auxiliar para tocar qualquer áudio já com o volume ajustado
+def reproduzir_audio(vc, caminho_ou_url, volume=1.0, ffmpeg_opts=None):
+    opcoes = ffmpeg_opts or {'options': '-vn'}
+    source = discord.FFmpegPCMAudio(caminho_ou_url, **opcoes)
+    source = discord.PCMVolumeTransformer(source, volume=volume)
+
+    if vc.is_playing():
+        vc.stop()
+
+    vc.play(source, after=lambda e: print(f"Erro no FFmpeg: {e}") if e else None)
 
 
 @bot.event
@@ -79,7 +91,7 @@ async def on_message(msg:discord.Message):
 
 @bot.command()
 async def ajuda(ctx):
-    embed_help = discord.Embed(title="Menu AJUDA",
+    embed1 = embed_help = discord.Embed(title="Menu AJUDA",
                           description="aqui está tudo que eu posso fazer:",)
 
     imagem_thumb = discord.File("Imgs/JanjoTalkLogo.png", "JanjoTalkLogo.png")
@@ -107,7 +119,20 @@ async def ajuda(ctx):
     embed_help.add_field(name="~sair", 
                          value="Sai da chamada na qual estava", 
                          inline=False)
-    
+
+
+    # embed_help2 = discord.Embed(title="Menu AJUDA Pg.2",
+    #                       description="aqui está o resto que faço:",)
+
+    # imagem_thumb = discord.File("Imgs/JanjoTalkLogo.png", "JanjoTalkLogo.png")
+    # embed_help.set_thumbnail(url="attachment://JanjoTalkLogo.png")
+
+    # imagem_author = discord.File("Imgs/Author_Logo.png", "Author_logo.png")
+    # embed_help.set_author(name="MigelEspig",
+    #                   url="https://github.com/MigelEspig/DiscordBot-JanjoTalk.git",
+    #                   icon_url="attachment://Author_logo.png")
+
+    # embed_help.color = discord.Color.orange()
     embed_help.add_field(name="~motivar", 
                          value="Toca uma música especial na chamada", 
                          inline=False)
@@ -117,7 +142,7 @@ async def ajuda(ctx):
                          inline=False)
 
     async def forward_action(interact:discord.Interaction):
-        await interact.response.send_message("paulo bogoceta gosta de caceta (sem tempo pra falar 'engolir')")
+        await interact.response.edit_message.embed_help2
 
     buttons_view = discord.ui.View()
     button_forward = discord.ui.Button(label=">>>", style=discord.ButtonStyle.green)
@@ -159,6 +184,8 @@ async def falar(ctx:commands.Context,*, text):
 
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
+
+    reproduzir_audio(ctx.voice_client, source, volume=1.8)
 
     source = discord.FFmpegPCMAudio(r"Sounds/TextoFalado.mp3") 
     await ctx.send("Tocando áudio!")
