@@ -200,28 +200,23 @@ async def tocar(ctx,*, pesquisa:str):
         ctx.voice_client.stop()
 
     async with ctx.typing():
+        status_busca = await ctx.send("⌛ - Buscando sua música... Calma precoce")
         data = await bot.loop.run_in_executor(None, buscar_video, pesquisa)
 
     if not data:
         await ctx.send("Não existe essa música, SEU FASCISTA!") 
         return
-
-    # if len(data) == 1:
-    #     chosen = data[0]
-    # else:
-    #     for i in data:
-
-        
+ 
     audio_url = data['url']
     titulo = data['title']
-
     source = discord.FFmpegPCMAudio(audio_url, **FFMPEG_OPTIONS)
 
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
     ctx.voice_client.play(source)
-    await ctx.send(f"Reproduzindo: **{titulo}**")
+
+    await status_busca.edit(content=f"Reproduzindo: **{titulo}**")
 
 @bot.command
 async def volume(ctx, valor: int):
