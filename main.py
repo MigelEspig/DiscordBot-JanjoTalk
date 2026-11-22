@@ -116,9 +116,18 @@ async def ajuda(ctx):
                          value="pesquisa no Youtube o texto após o comando e reproduz seu audio na chamada", 
                          inline=False)
 
-    
+    async def forward_action(interact:discord.Interaction):
+        await interact.response.send_message("paulo bogoceta gosta de caceta (sem tempo pra falar 'engolir')")
 
-    await ctx.reply(files=[imagem_thumb, imagem_author], embed=embed_help)
+    buttons_view = discord.ui.View()
+    button_forward = discord.ui.Button(label=">>>", style=discord.ButtonStyle.green)
+    button_forward.callback = forward_action
+
+    buttons_view.add_item(button_forward)
+
+    await ctx.reply(files=[imagem_thumb, imagem_author], 
+                    embed=embed_help, 
+                    view=buttons_view)
 
 
 @bot.command()
