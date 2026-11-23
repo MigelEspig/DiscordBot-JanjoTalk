@@ -33,8 +33,11 @@ def buscar_video(pesquisa):
     return data
 
 # Função auxiliar para tocar qualquer áudio já com o volume ajustado
-def reproduzir_audio(vc, caminho_ou_url, volume=1.0, ffmpeg_opts=None):
-    opcoes = ffmpeg_opts or {'options': '-vn'}
+def reproduzir_audio(vc, caminho_ou_url, volume=1.0, ganho_ffmpeg=1.0, ffmpeg_opts=None):
+    # Faz uma cópia das opções para não sobrescrever o FFMPEG_OPTIONS global
+    opcoes = dict(ffmpeg_opts) if ffmpeg_opts else {}
+    opcoes['options'] = f'-vn -af "volume={ganho_ffmpeg}"'
+
     source = discord.FFmpegPCMAudio(caminho_ou_url, **opcoes)
     source = discord.PCMVolumeTransformer(source, volume=volume)
 
@@ -168,28 +171,20 @@ async def odiar(ctx:commands.Context):
 
 @bot.command()
 async def falar(ctx:commands.Context,*, text):
-    # Comando teste temporário para repetir mensagem do remetente
-    GenerateAudio = gTTS(text = text, lang="pt-br")
-    GenerateAudio.save("Sounds/TextoFalado.mp3")
-
     if not ctx.author.voice:
-    # verifica se o remetente está em uma chamada
         await ctx.send("Você precisa estar em uma call!")
         return
+
+    GenerateAudio = gTTS(text=text, lang="pt-br")
+    GenerateAudio.save("Sounds/TextoFalado.mp3")
 
     canal = ctx.author.voice.channel
 
     if ctx.voice_client is None:
         await canal.connect()
 
-    if ctx.voice_client.is_playing():
-        ctx.voice_client.stop()
-
-    reproduzir_audio(ctx.voice_client, source, volume=1.8)
-
-    source = discord.FFmpegPCMAudio(r"Sounds/TextoFalado.mp3") 
+    reproduzir_audio(ctx.voice_client, r"Sounds/TextoFalado.mp3", ganho_ffmpeg=1.5)
     await ctx.send("Tocando áudio!")
-    ctx.voice_client.play(source)
 
 
 @bot.command()
@@ -220,10 +215,9 @@ async def sair(ctx):
         await ctx.send("Não estou em nenhuma call.")
 
 @bot.command()
-async def tocar(ctx,*, pesquisa:str):
-
+async def tocar(ctx, *, pesquisa: str):
     if not ctx.author.voice:
-    # verifica se o remetente está em uma chamada
+        # verifica se o remetente está em uma chamada
         await ctx.reply("vou tocar o áudio pra quem? ta mais louco que meu marido")
         return
 
@@ -245,12 +239,9 @@ async def tocar(ctx,*, pesquisa:str):
  
     audio_url = data['url']
     titulo = data['title']
-    source = discord.FFmpegPCMAudio(audio_url, **FFMPEG_OPTIONS)
 
-    if ctx.voice_client.is_playing():
-        ctx.voice_client.stop()
-
-    ctx.voice_client.play(source)
+    # Substitui o FFmpegPCMAudio e o .play() antigos, deixando o YouTube em 20% do volume
+    reproduzir_audio(ctx.voice_client, audio_url, volume=0.15, ffmpeg_opts=FFMPEG_OPTIONS)
 
     await status_busca.edit(content=f"Reproduzindo: **{titulo}**")
 
@@ -276,9 +267,8 @@ async def motivar(ctx):
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
-    source = discord.FFmpegPCMAudio(r"Sounds/Musica2.mp3")
+    reproduzir_audio(ctx.voice_client, r"Sounds/Musica2.mp3", volume=0.15)
     await ctx.send("Tocando áudio!")
-    ctx.voice_client.play(source)
 
 @bot.command()
 async def parar(ctx:commands.context):
