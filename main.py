@@ -29,8 +29,8 @@ ytdl = yt_dlp.YoutubeDL(YTDL_OPTIONS)
 def buscar_video(pesquisa):
     data = ytdl.extract_info(pesquisa, download=False)
     if 'entries' in data:
-        return data['entries'][0]
-    return data
+        return data['entries'][:5]  # Retorna uma lista com até 5 vídeos
+    return [data]
 
 # Função auxiliar para tocar qualquer áudio já com o volume ajustado
 def reproduzir_audio(vc, caminho_ou_url, volume=1.0, ganho_ffmpeg=1.0, ffmpeg_opts=None):
@@ -233,23 +233,40 @@ async def tocar(ctx, *, pesquisa: str):
         status_busca = await ctx.send("⌛ - Buscando sua música... Calma precoce")
         data = await bot.loop.run_in_executor(None, buscar_video, pesquisa)
 
-    if not data:
-        await ctx.send("Não existe essa música, SEU FASCISTA!") 
-        return
- 
-    audio_url = data['url']
-    titulo = data['title']
+    if len(data) == 1:
+        escolhido = data[0]
+    else:
+        lista_texto = "**Escolhe uma opção escrevendo o número no chat:**\n\n"
+        for i, video in enumerate(data, start=1):
+            lista_texto += f"**{i}.** {video['title']}\n"
 
-    # Substitui o FFmpegPCMAudio e o .play() antigos, deixando o YouTube em 20% do volume
-    reproduzir_audio(ctx.voice_client, audio_url, volume=0.25, ffmpeg_opts=FFMPEG_OPTIONS)
+        await ctx.send(lista_texto)
 
-    await status_busca.edit(content=f"Reproduzindo: **{titulo}**")
+        def verificar_resposta(msg):
+            return (
+                msg.author == ctx.author
+                and msg.channel == ctx.channel
+                and msg.content.isdigit()
+                and 1 <= int(msg.content) <= len(data)
+            )
 
-@bot.command
-async def volume(ctx, valor: int):
-    if ctx.voice_client and ctx.voice_client.source:
-        ctx.voice_client.source.volume = valor / 100
-        await ctx.send(f"Volume ajustado para **{valor}%**.")
+        try:
+            resposta = await bot.wait_for("message", check=verificar_resposta, timeout=30.0)
+        except TimeoutError:
+            await ctx.send("Tempo esgotado! A escolha foi cancelada.")
+            return
+
+        escolhido = data[int(resposta.content) - 1]
+
+    audio_url = escolhido['url']
+    titulo = escolhido['title']
+
+    if ctx.voice_client.is_playing():
+        ctx.voice_client.stop()
+
+    reproduzir_audio(ctx.voice_client, audio_url, volume=0.25)
+    await ctx.send(f"A reproduzir: **{titulo}**")
+
 
 @bot.command()
 async def motivar(ctx):
