@@ -183,7 +183,7 @@ async def falar(ctx:commands.Context,*, text):
     if ctx.voice_client is None:
         await canal.connect()
 
-    reproduzir_audio(ctx.voice_client, r"Sounds/TextoFalado.mp3", ganho_ffmpeg=1.5)
+    reproduzir_audio(ctx.voice_client, r"Sounds/TextoFalado.mp3", ganho_ffmpeg=1.3)
     await ctx.send("Tocando áudio!")
 
 
@@ -241,7 +241,7 @@ async def tocar(ctx, *, pesquisa: str):
     titulo = data['title']
 
     # Substitui o FFmpegPCMAudio e o .play() antigos, deixando o YouTube em 20% do volume
-    reproduzir_audio(ctx.voice_client, audio_url, volume=0.15, ffmpeg_opts=FFMPEG_OPTIONS)
+    reproduzir_audio(ctx.voice_client, audio_url, volume=0.25, ffmpeg_opts=FFMPEG_OPTIONS)
 
     await status_busca.edit(content=f"Reproduzindo: **{titulo}**")
 
@@ -267,7 +267,7 @@ async def motivar(ctx):
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
-    reproduzir_audio(ctx.voice_client, r"Sounds/Musica2.mp3", volume=0.15)
+    reproduzir_audio(ctx.voice_client, r"Sounds/Musica2.mp3", volume=0.20)
     await ctx.send("Tocando áudio!")
 
 @bot.command()
