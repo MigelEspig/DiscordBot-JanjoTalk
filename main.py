@@ -234,8 +234,10 @@ async def tocar(ctx, *, pesquisa: str):
         data = await bot.loop.run_in_executor(None, buscar_video, pesquisa)
 
     if len(data) == 1:
+        await status_busca.delete(delay=0)
         escolhido = data[0]
     else:
+        await status_busca.delete(delay=0)
         lista_texto = "**Escolhe uma opção escrevendo o número no chat:**\n\n"
         for i, video in enumerate(data, start=1):
             lista_texto += f"**{i}.** {video['title']}\n"
@@ -264,7 +266,7 @@ async def tocar(ctx, *, pesquisa: str):
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
-    reproduzir_audio(ctx.voice_client, audio_url, volume=0.25)
+    reproduzir_audio(ctx.voice_client, audio_url, volume=0.50)
     await ctx.send(f"A reproduzir: **{titulo}**")
 
 
@@ -284,8 +286,8 @@ async def motivar(ctx):
     if ctx.voice_client.is_playing():
         ctx.voice_client.stop()
 
-    reproduzir_audio(ctx.voice_client, r"Sounds/Musica2.mp3", volume=0.20)
-    await ctx.send("Tocando áudio!")
+    reproduzir_audio(ctx.voice_client, r"Sounds/Musica2.mp3", volume=0.30)
+    await ctx.send("Motivando com maestria!")
 
 @bot.command()
 async def parar(ctx:commands.context):
